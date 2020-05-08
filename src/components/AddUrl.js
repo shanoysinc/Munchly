@@ -15,7 +15,10 @@ class AddUrl extends Component {
     };
 
     urlHandler = (e) => {
-        this.setState({ url: e.target.value });
+        let str = e.target.value
+
+        this.setState({ url: str });
+
     };
 
     colorPicker = () => {
@@ -39,11 +42,16 @@ class AddUrl extends Component {
         e.preventDefault();
         const key = encode(this.state.encodeNumber);
 
+        let urlStr = ''
+        if (!this.state.url.includes('https://')) {
+            urlStr = 'https://' + this.state.url
+        }
+
         this.setState({
             munchList: [
                 {
                     key: key,
-                    link: this.state.url,
+                    link: urlStr,
                     id: this.state.encodeNumber,
                     color: this.state.currentColor,
                 },
@@ -52,7 +60,7 @@ class AddUrl extends Component {
             encodeNumber: this.state.encodeNumber + 531,
             isLoading: true,
         });
-
+        console.log(str)
         this.colorPicker();
     };
 
@@ -95,31 +103,31 @@ class AddUrl extends Component {
                         <div className="loader"></div>
                     </>
                 ) : (
-                    <ol className="container" reversed>
-                        {this.state.munchList.map(
-                            ({ id, link, color, key }) => {
-                                parser = new Url(link);
-                                return (
-                                    <li key={id}>
-                                        <h5>
-                                            {parser.hostname.replace(
-                                                "www.",
-                                                ""
-                                            )}
-                                        </h5>
-                                        <button className={`url-btn ${color}`}>
-                                            <a
-                                                rel="noopener noreferrer"
-                                                target="_blank"
-                                                href={link}
-                                            >{`Munch.ly/${key}`}</a>
-                                        </button>
-                                    </li>
-                                );
-                            }
-                        )}
-                    </ol>
-                )}
+                        <ol className="container" reversed>
+                            {this.state.munchList.map(
+                                ({ id, link, color, key }) => {
+                                    parser = new Url(link);
+                                    return (
+                                        <li key={id}>
+                                            <h5>
+                                                {parser.hostname.replace(
+                                                    "www.",
+                                                    ""
+                                                )}
+                                            </h5>
+                                            <button className={`url-btn ${color}`}>
+                                                <a
+                                                    rel="noopener noreferrer"
+                                                    target="_blank"
+                                                    href={link}
+                                                >{`Munch.ly/${key}`}</a>
+                                            </button>
+                                        </li>
+                                    );
+                                }
+                            )}
+                        </ol>
+                    )}
             </>
         );
     }

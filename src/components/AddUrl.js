@@ -45,6 +45,8 @@ class AddUrl extends Component {
         let urlStr = ''
         if (!this.state.url.includes('https://')) {
             urlStr = 'https://' + this.state.url
+        } else {
+            urlStr = this.state.url
         }
 
         this.setState({
@@ -59,9 +61,11 @@ class AddUrl extends Component {
             ],
             encodeNumber: this.state.encodeNumber + 531,
             isLoading: true,
+            url: ''
         });
-        console.log(str)
+        console.log(this.state.munchList)
         this.colorPicker();
+
     };
 
     AddUrlHanlder = (e) => {
@@ -69,7 +73,6 @@ class AddUrl extends Component {
     };
     render() {
         let parser = Url;
-        console.log("addUrl rendering");
         return (
             <>
                 <form onSubmit={this.submitHandler}>
@@ -107,6 +110,7 @@ class AddUrl extends Component {
                             {this.state.munchList.map(
                                 ({ id, link, color, key }) => {
                                     parser = new Url(link);
+
                                     return (
                                         <li key={id}>
                                             <h5>
@@ -115,13 +119,16 @@ class AddUrl extends Component {
                                                     ""
                                                 )}
                                             </h5>
-                                            <button className={`url-btn ${color}`}>
-                                                <a
-                                                    rel="noopener noreferrer"
-                                                    target="_blank"
-                                                    href={link}
-                                                >{`Munch.ly/${key}`}</a>
-                                            </button>
+
+
+                                            <a rel="noopener noreferrer"
+                                                target="_blank"
+                                                href={link}
+                                            >
+                                                <button className={`url-btn ${color}`}>
+                                                    {`Munch.ly/${key}`}
+                                                </button>
+                                            </a>
                                         </li>
                                     );
                                 }
